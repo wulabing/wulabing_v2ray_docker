@@ -148,8 +148,8 @@ port_alterid_set() {
     [[ -z ${port} ]] && port="443"
     read -rp "请输入alterID（default:2 仅允许填数字）:" alterID
     [[ -z ${alterID} ]] && alterID="2"
-    read -rp "请输入email（正确的邮箱可以在证书到期时收到邮件的提示）:" email
-    [[ -z ${email} ]] && echo -e "${Error} ${RedBG} 未输入email${Font}" && exit 1
+#    read -rp "请输入email（正确的邮箱可以在证书到期时收到邮件的提示）:" email
+#    [[ -z ${email} ]] && echo -e "${Error} ${RedBG} 未输入email${Font}" && exit 1
   fi
 }
 
@@ -270,6 +270,7 @@ port_exist_check() {
 }
 
 v2ray_conf_add_tls() {
+  mkdir -p /etc/v2ray
   cd /etc/v2ray || exit
   cp -a ./tls/config.json /etc/v2ray/
   modify_alterid

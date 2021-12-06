@@ -14,7 +14,7 @@ services:
       - "443:443"
     volumes:
       - /etc/nginx:/etc/nginx
-      - /www:/usr/share/nginx/html
+      - /www:/www
       - /ssl:/ssl
     networks:
       - v2ray

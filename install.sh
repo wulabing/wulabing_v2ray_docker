@@ -98,22 +98,22 @@ judge() {
 dependency_install() {
   ${INS} install wget git lsof -y
 
-  if [[ "${ID}" == "centos" ]]; then
-    ${INS} -y install crontabs
-  else
-    ${INS} -y install cron
-  fi
-  judge "安装 crontab"
-
-  if [[ "${ID}" == "centos" ]]; then
-    touch /var/spool/cron/root && chmod 600 /var/spool/cron/root
-    systemctl start crond && systemctl enable crond
-  else
-    touch /var/spool/cron/crontabs/root && chmod 600 /var/spool/cron/crontabs/root
-    systemctl start cron && systemctl enable cron
-
-  fi
-  judge "crontab 自启动配置 "
+#  if [[ "${ID}" == "centos" ]]; then
+#    ${INS} -y install crontabs
+#  else
+#    ${INS} -y install cron
+#  fi
+#  judge "安装 crontab"
+#
+#  if [[ "${ID}" == "centos" ]]; then
+#    touch /var/spool/cron/root && chmod 600 /var/spool/cron/root
+#    systemctl start crond && systemctl enable crond
+#  else
+#    touch /var/spool/cron/crontabs/root && chmod 600 /var/spool/cron/crontabs/root
+#    systemctl start cron && systemctl enable cron
+#
+#  fi
+#  judge "crontab 自启动配置 "
 
   ${INS} -y install bc
   judge "安装 bc"
@@ -447,7 +447,7 @@ acme() {
     -p 80:80 \
     -p 443:443 \
     -v "$(pwd)/acme":/acme.sh \
-    neilpang/acme.sh --issue --standalone --server zerossl -m $email -d $domain
+    neilpang/acme.sh --issue --standalone --server letsencrypt --preferred-chain "ISRG Root X1" -d $domain
 
   docker run -it --rm \
     -v "$(pwd)/acme":/acme.sh \
@@ -578,7 +578,7 @@ install_v2ray_ws_tls() {
 }
 
 update_sh() {
-  ol_version=$(curl -L -s https://raw.githubusercontent.com/wulabing/V2Ray_ws-tls_bash_onekey/${github_branch}/install.sh | grep "shell_version=" | head -1 | awk -F '=|"' '{print $3}')
+  ol_version=$(curl -L -s https://raw.githubusercontent.com/wulabing/wulabing_v2ray_docker/${github_branch}/install.sh | grep "shell_version=" | head -1 | awk -F '=|"' '{print $3}')
   echo "$ol_version" >$version_cmp
   echo "$shell_version" >>$version_cmp
   if [[ "$shell_version" < "$(sort -rV $version_cmp | head -1)" ]]; then
@@ -586,7 +586,7 @@ update_sh() {
     read -r update_confirm
     case $update_confirm in
     [yY][eE][sS] | [yY])
-      wget -N --no-check-certificate https://raw.githubusercontent.com/wulabing/V2Ray_ws-tls_bash_onekey/${github_branch}/install.sh
+      wget -N --no-check-certificate https://raw.githubusercontent.com/wulabing/wulabing_v2ray_docker/${github_branch}/install.sh
       echo -e "${OK} ${GreenBG} 更新完成 ${Font}"
       exit 0
       ;;
@@ -674,7 +674,7 @@ menu() {
     install_v2_h2
     ;;
   3)
-    bash <(curl -L -s https://raw.githubusercontent.com/wulabing/V2Ray_ws-tls_bash_onekey/${github_branch}/v2ray.sh)
+    bash <(curl -L -s https://raw.githubusercontent.com/wulabing/wulabing_v2ray_docker/${github_branch}/v2ray.sh)
     ;;
   4)
     read -rp "请输入UUID:" UUID

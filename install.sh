@@ -271,7 +271,6 @@ port_exist_check() {
 
 v2ray_conf_add_tls() {
   mkdir -p /etc/v2ray
-  cd /etc/v2ray || exit
   cp -a ./tls/config.json /etc/v2ray/
   modify_alterid
   modify_inbound_port

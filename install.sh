@@ -212,7 +212,6 @@ web_camouflage() {
   ##请注意 这里和LNMP脚本的默认路径冲突，千万不要在安装了LNMP的环境下使用本脚本，否则后果自负
   rm -rf $web_dir
   mkdir -p $web_dir
-  cd $web_dir || exit
   git clone https://github.com/wulabing/3DCEList.git
   judge "web 站点伪装"
 }
@@ -570,7 +569,6 @@ install_v2ray_ws_tls() {
   tls_type
   v2ray_nginx_install
   basic_information
-  tls_type
   vmess_link_image_choice
   show_information
 }

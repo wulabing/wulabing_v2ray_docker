@@ -286,6 +286,7 @@ v2ray_conf_add_tls() {
   modify_alterid
   modify_inbound_port
   modify_UUID
+  modify_path
 }
 
 old_config_exist_check() {
@@ -439,7 +440,7 @@ ssl_judge_and_install() {
     read -r ssl_delete
     case $ssl_delete in
     [yY][eE][sS] | [yY])
-      rm -rf /data/*
+      rm -rf /ssl/*
       echo -e "${OK} ${GreenBG} 已删除 ${Font}"
       ;;
     *) ;;

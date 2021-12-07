@@ -552,9 +552,9 @@ delete_tls_key_and_crt() {
 }
 judge_mode() {
   if [ -f $v2ray_bin_dir ] || [ -f $v2ray_bin_dir_old/v2ray ]; then
-    if grep -q "ws" $v2ray_qr_config_file; then
+    if grep -q "ws" $v2ray_qr_config_file >/dev/null 2>&1; then
       shell_mode="ws"
-    elif grep -q "h2" $v2ray_qr_config_file; then
+    elif grep -q "h2" $v2ray_qr_config_file >/dev/null 2>&1; then
       shell_mode="h2"
     fi
   fi

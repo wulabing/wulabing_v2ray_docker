@@ -460,14 +460,14 @@ acme() {
     -p 443:443 \
     -v "$(pwd)/acme":/acme.sh \
     neilpang/acme.sh --issue --standalone --server letsencrypt --preferred-chain "ISRG Root X1" -d $domain
-  judge "证书签发"
+
   docker run -it --rm \
     -v "$(pwd)/acme":/acme.sh \
     -v /ssl:/ssl \
     neilpang/acme.sh --install-cert -d $domain \
     --key-file /ssl/v2ray.key \
     --fullchain-file /ssl/v2ray.crt
-
+  judge "证书签发"
 }
 
 tls_type() {

@@ -129,11 +129,15 @@ dependency_install() {
 
   if [[ -z $(command -v docker) ]]; then
     curl -fsSL https://get.docker.com -o get-docker.sh && sh ./get-docker.sh
+    systemctl start docker && systemctl enable docker
   fi
+  judge "安装 docker"
 
   if [[ -z $(command -v docker-compose) ]]; then
     ${INS} -y install docker-compose
   fi
+  judge "安装 docker-compose"
+
 }
 
 basic_optimization() {
@@ -429,8 +433,8 @@ show_information() {
 }
 
 ssl_judge_and_install() {
-  if [[ -f "/data/v2ray.key" || -f "/data/v2ray.crt" ]]; then
-    echo "/data 目录下证书文件已存在"
+  if [[ -f "/ssl/v2ray.key" || -f "/ssl/v2ray.crt" ]]; then
+    echo "/ssl 目录下证书文件已存在"
     echo -e "${OK} ${GreenBG} 是否删除 [Y/N]? ${Font}"
     read -r ssl_delete
     case $ssl_delete in
@@ -443,7 +447,7 @@ ssl_judge_and_install() {
     esac
   fi
 
-  if [[ -f "/data/v2ray.key" || -f "/data/v2ray.crt" ]]; then
+  if [[ -f "/ssl/v2ray.key" || -f "/ssl/v2ray.crt" ]]; then
     echo "证书文件已存在"
   else
     acme
@@ -455,7 +459,7 @@ acme() {
     -p 443:443 \
     -v "$(pwd)/acme":/acme.sh \
     neilpang/acme.sh --issue --standalone --server letsencrypt --preferred-chain "ISRG Root X1" -d $domain
-
+  judge "证书签发"
   docker run -it --rm \
     -v "$(pwd)/acme":/acme.sh \
     -v /ssl:/ssl \

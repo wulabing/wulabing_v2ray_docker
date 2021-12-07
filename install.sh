@@ -98,22 +98,22 @@ judge() {
 dependency_install() {
   ${INS} install wget git lsof -y
 
-#  if [[ "${ID}" == "centos" ]]; then
-#    ${INS} -y install crontabs
-#  else
-#    ${INS} -y install cron
-#  fi
-#  judge "安装 crontab"
-#
-#  if [[ "${ID}" == "centos" ]]; then
-#    touch /var/spool/cron/root && chmod 600 /var/spool/cron/root
-#    systemctl start crond && systemctl enable crond
-#  else
-#    touch /var/spool/cron/crontabs/root && chmod 600 /var/spool/cron/crontabs/root
-#    systemctl start cron && systemctl enable cron
-#
-#  fi
-#  judge "crontab 自启动配置 "
+  #  if [[ "${ID}" == "centos" ]]; then
+  #    ${INS} -y install crontabs
+  #  else
+  #    ${INS} -y install cron
+  #  fi
+  #  judge "安装 crontab"
+  #
+  #  if [[ "${ID}" == "centos" ]]; then
+  #    touch /var/spool/cron/root && chmod 600 /var/spool/cron/root
+  #    systemctl start crond && systemctl enable crond
+  #  else
+  #    touch /var/spool/cron/crontabs/root && chmod 600 /var/spool/cron/crontabs/root
+  #    systemctl start cron && systemctl enable cron
+  #
+  #  fi
+  #  judge "crontab 自启动配置 "
 
   ${INS} -y install bc
   judge "安装 bc"
@@ -126,6 +126,14 @@ dependency_install() {
 
   ${INS} -y install curl
   judge "安装 curl"
+
+  if [[ -z $(command -v docker) ]]; then
+    curl -fsSL https://get.docker.com -o get-docker.sh && sh ./get-docker.sh
+  fi
+
+  if [[ -z $(command -v docker-compose) ]]; then
+    ${INS} -y install docker-compose
+  fi
 }
 
 basic_optimization() {
@@ -148,8 +156,8 @@ port_alterid_set() {
     [[ -z ${port} ]] && port="443"
     read -rp "请输入alterID（default:2 仅允许填数字）:" alterID
     [[ -z ${alterID} ]] && alterID="2"
-#    read -rp "请输入email（正确的邮箱可以在证书到期时收到邮件的提示）:" email
-#    [[ -z ${email} ]] && echo -e "${Error} ${RedBG} 未输入email${Font}" && exit 1
+    #    read -rp "请输入email（正确的邮箱可以在证书到期时收到邮件的提示）:" email
+    #    [[ -z ${email} ]] && echo -e "${Error} ${RedBG} 未输入email${Font}" && exit 1
   fi
 }
 
